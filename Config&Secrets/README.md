@@ -63,6 +63,11 @@ oc set data cm/mycmfile --from-file=id_rsa.pub=/etc/fstab
 oc set data secret/mysecretfile --from-file=id_rsa=/etc/redhat_release
 ```
 
+### 7) Rollout existing deployment to refelct the change
+```bash
+oc rollout restart deploy/appname
+```
+
 > **Notes**
 > - Secrets are base64-encoded, not encrypted by default; ensure appropriate RBAC and, if needed, enable at-rest encryption.
 > - Environment variables are convenient for simple key-value pairs. For keys/certs or structured config, prefer mounting as files.
