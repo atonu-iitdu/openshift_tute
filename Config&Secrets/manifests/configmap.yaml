@@ -1,0 +1,22 @@
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mycm
+data:
+  # simple key-value
+  MY_STRING: "foo"
+  # example multi-line config content
+  app.conf: |
+    [server]
+    host = 0.0.0.0
+    port = 8080
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mycmfile
+data:
+  # Simulate a file-like key that you might have provided with --from-file
+  id_rsa.pub: |
+    ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDemoPublicKeyValue example@host

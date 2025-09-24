@@ -1,0 +1,39 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appname
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: appname
+  template:
+    metadata:
+      labels:
+        app: appname
+    spec:
+      containers:
+        - name: app
+          image: registry.access.redhat.com/ubi9/ubi-minimal
+          command: ["sh", "-c", "echo env && env && echo '---'; echo mounts && ls -l /my_mount || true && ls -l /my_secret || true && sleep 3600"]
+          # Pull in all keys from mycm and mysecret as environment variables
+          envFrom:
+            - configMapRef:
+                name: mycm
+            - secretRef:
+                name: mysecret
+          volumeMounts:
+            - name: mycmfile-vol
+              mountPath: /my_mount
+              readOnly: true
+            - name: mysecretfile-vol
+              mountPath: /my_secret
+              readOnly: true
+      volumes:
+        - name: mycmfile-vol
+          configMap:
+            name: mycmfile
+        - name: mysecretfile-vol
+          secret:
+            secretName: mysecretfile
